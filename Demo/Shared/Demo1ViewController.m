@@ -141,22 +141,44 @@
 
 
 #pragma mark - UIViewController methods
+//- (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(__unused NSTimeInterval)duration
+//{
+//	for (CMPopTipView *popTipView in self.visiblePopTipViews) {
+//		id targetObject = popTipView.targetObject;
+//		[popTipView dismissAnimated:NO];
+//		
+//		if ([targetObject isKindOfClass:[UIButton class]]) {
+//			UIButton *button = (UIButton *)targetObject;
+//			[popTipView presentPointingAtView:button inView:self.view animated:NO];
+//		} else {
+//			UIBarButtonItem *barButtonItem = (UIBarButtonItem *)targetObject;
+//			[popTipView presentPointingAtBarButtonItem:barButtonItem animated:NO];
+//		}
+//	}
+//}
 
-- (void)willAnimateRotationToInterfaceOrientation:(__unused UIInterfaceOrientation)toInterfaceOrientation duration:(__unused NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
-	for (CMPopTipView *popTipView in self.visiblePopTipViews) {
-		id targetObject = popTipView.targetObject;
-		[popTipView dismissAnimated:NO];
-		
-		if ([targetObject isKindOfClass:[UIButton class]]) {
-			UIButton *button = (UIButton *)targetObject;
-			[popTipView presentPointingAtView:button inView:self.view animated:NO];
-		}
-		else {
-			UIBarButtonItem *barButtonItem = (UIBarButtonItem *)targetObject;
-			[popTipView presentPointingAtBarButtonItem:barButtonItem animated:NO];
-		}
-	}
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    /// 屏幕旋转前的方向
+    /// UIInterfaceOrientation beforeTransition = UIApplication.sharedApplication.statusBarOrientation;
+    /// [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>ctx) {
+        /// 屏幕旋转后的方向
+        /// UIInterfaceOrientation afterTransition = UIApplication.sharedApplication.statusBarOrientation;
+    /// } completion:^(id<UIViewControllerTransitionCoordinatorContext>ctx) {
+    /// }];
+    for (CMPopTipView *popTipView in self.visiblePopTipViews) {
+        id targetObject = popTipView.targetObject;
+        [popTipView dismissAnimated:NO];
+        
+        if ([targetObject isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)targetObject;
+            [popTipView presentPointingAtView:button inView:self.view animated:NO];
+        } else {
+            UIBarButtonItem *barButtonItem = (UIBarButtonItem *)targetObject;
+            [popTipView presentPointingAtBarButtonItem:barButtonItem animated:NO];
+        }
+    }
 }
 
 - (void)viewDidLoad
